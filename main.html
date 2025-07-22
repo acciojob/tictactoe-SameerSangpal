@@ -101,7 +101,7 @@
       boardDiv.style.display = 'block';
       messageDiv.textContent = `${player1}, you're up`;
 
-      grid.innerHTML = ''; // clear old cells if any
+      grid.innerHTML = '';
       cells = Array(9).fill('');
       isGameOver = false;
       currentPlayer = 'X';
@@ -119,7 +119,7 @@
       if (cells[index] !== '' || isGameOver) return;
 
       cells[index] = currentPlayer;
-      cell.textContent = currentPlayer;
+      cell.textContent = currentPlayer.toLowerCase();
 
       if (checkWinner()) {
         const winnerName = currentPlayer === 'X' ? player1 : player2;
