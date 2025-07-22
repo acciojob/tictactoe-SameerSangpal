@@ -1,16 +1,142 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
+	<title>TIC TAC TOE</title>
 	<link rel="stylesheet" href="styles.css">
-</head>
+	<style>
+    .container {
+      width: 100%;
+      text-align: center;
+      margin-top: 50px;
+      font-family: Arial, sans-serif;
+    }
 
+    .board {
+      display: none;
+      margin: 20px auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 5px;
+      justify-content: center;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f0f0f0;
+      cursor: pointer;
+      border: 1px solid #ccc;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #player-inputs {
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 8px;
+      margin: 5px;
+    }
+  </style>
+</head>
 <body>
 	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
+	 <div class="container">
+    <div id="player-inputs">
+      <input type="text" id="player-1" placeholder="Player 1 Name" />
+      <input type="text" id="player-2" placeholder="Player 2 Name" />
+      <button id="submit">Submit</button>
+    </div>
 
+    <div class="board">
+      <h1>Tic Tac Toe</h1>
+      <div class="message"></div>
+      <div class="grid" id="grid">
+        <!-- 9 cells will be inserted here by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const submitBtn = document.getElementById('submit');
+    const boardDiv = document.querySelector('.board');
+    const messageDiv = document.querySelector('.message');
+    const grid = document.getElementById('grid');
+    const player1Input = document.getElementById('player-1');
+    const player2Input = document.getElementById('player-2');
+
+    let currentPlayer = 'X';
+    let player1 = '';
+    let player2 = '';
+    let cells = Array(9).fill('');
+    let isGameOver = false;
+
+    const winningCombos = [
+      [0,1,2], [3,4,5], [6,7,8],
+      [0,3,6], [1,4,7], [2,5,8],
+      [0,4,8], [2,4,6]
+    ];
+
+    submitBtn.addEventListener('click', () => {
+      player1 = player1Input.value.trim();
+      player2 = player2Input.value.trim();
+      if (player1 === '' || player2 === '') {
+        alert('Please enter names for both players!');
+        return;
+      }
+
+      document.getElementById('player-inputs').style.display = 'none';
+      boardDiv.style.display = 'block';
+      messageDiv.textContent = `${player1}, you're up`;
+
+      // Create grid cells
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.id = (i + 1).toString();
+        cell.addEventListener('click', () => handleCellClick(i, cell));
+        grid.appendChild(cell);
+      }
+    });
+
+    function handleCellClick(index, cell) {
+      if (cells[index] !== '' || isGameOver) return;
+
+      cells[index] = currentPlayer;
+      cell.textContent = currentPlayer;
+
+      if (checkWinner()) {
+        const winnerName = currentPlayer === 'X' ? player1 : player2;
+        messageDiv.textContent = `${winnerName}, congratulations you won!`;
+        isGameOver = true;
+        return;
+      }
+
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      const currentName = currentPlayer === 'X' ? player1 : player2;
+      messageDiv.textContent = `${currentName}, you're up`;
+    }
+
+    function checkWinner() {
+      return winningCombos.some(combo => {
+        const [a, b, c] = combo;
+        return cells[a] && cells[a] === cells[b] && cells[b] === cells[c];
+      });
+    }
+  </script>
+    <script type="text/javascript" src="./script.js"></script>
 </body>
-
 </html>
