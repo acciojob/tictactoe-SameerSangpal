@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>TIC TAC TOE</title>
-	<link rel="stylesheet" href="styles.css">
-	<style>
+  <meta charset="UTF-8">
+  <title>TIC TAC TOE</title>
+  <style>
     .container {
       width: 100%;
       text-align: center;
@@ -53,8 +53,7 @@
   </style>
 </head>
 <body>
-	<!-- the entire body must be written by student -->
-	 <div class="container">
+  <div class="container">
     <div id="player-inputs">
       <input type="text" id="player1" placeholder="Player 1 Name" />
       <input type="text" id="player2" placeholder="Player 2 Name" />
@@ -74,8 +73,9 @@
     const boardDiv = document.querySelector('.board');
     const messageDiv = document.querySelector('.message');
     const grid = document.getElementById('grid');
-    const player1Input = document.getElementById('player-1');
-    const player2Input = document.getElementById('player-2');
+
+    const player1Input = document.getElementById('player1');
+    const player2Input = document.getElementById('player2');
 
     let currentPlayer = 'X';
     let player1 = '';
@@ -101,7 +101,11 @@
       boardDiv.style.display = 'block';
       messageDiv.textContent = `${player1}, you're up`;
 
-      // Create grid cells
+      grid.innerHTML = ''; // clear old cells if any
+      cells = Array(9).fill('');
+      isGameOver = false;
+      currentPlayer = 'X';
+
       for (let i = 0; i < 9; i++) {
         const cell = document.createElement('div');
         cell.classList.add('cell');
@@ -119,7 +123,7 @@
 
       if (checkWinner()) {
         const winnerName = currentPlayer === 'X' ? player1 : player2;
-        messageDiv.textContent = `${winnerName}, congratulations you won!`;
+        messageDiv.textContent = `${winnerName} congratulations you won!`;
         isGameOver = true;
         return;
       }
@@ -130,12 +134,10 @@
     }
 
     function checkWinner() {
-      return winningCombos.some(combo => {
-        const [a, b, c] = combo;
-        return cells[a] && cells[a] === cells[b] && cells[b] === cells[c];
-      });
+      return winningCombos.some(([a, b, c]) =>
+        cells[a] && cells[a] === cells[b] && cells[b] === cells[c]
+      );
     }
   </script>
-    <script type="text/javascript" src="./script.js"></script>
 </body>
 </html>
